@@ -1,0 +1,26 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.17.1'
+  displayName: 'Install Node.js'
+
+# - script: |
+#     npm install
+#     npm run build
+#   displayName: 'npm install and build'
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '/home/vsts/work/1/s'
+    Contents: '**'
+    TargetFolder: '/home/vsts/work/1/a'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '/home/vsts/work/1/a'
+    ArtifactName: 'wiz-front'
+    publishLocation: 'Container'
