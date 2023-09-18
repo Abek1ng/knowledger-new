@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import questionImage from "public/question.svg";
-import logoContainer from 'public/logoContainer.svg';
 import { supabase } from "../supabaseClient";
 import { v4 as uuidv4 } from 'uuid';
 import html2canvas from 'html2canvas';
 import GridLoader from 'react-spinners/GridLoader';
-import PropagateLoader from 'react-spinners/PropagateLoader'
 import { creds } from '../../creds';
+import ResultGrid from '../components/common/ResultGrid'
+import { ShareButtons } from '../components/common/ShareButtons'
 
-import {
-  TelegramShareButton,
-  WhatsappShareButton,
-  EmailShareButton,
-  TwitterShareButton,
-  TelegramIcon,
-  FacebookShareButton,
-  FacebookIcon,
-  WhatsappIcon,
-  EmailIcon,
-  TwitterIcon,
-} from 'react-share';
 
 
 const Quiz = () => {
@@ -43,6 +31,7 @@ const Quiz = () => {
   // Функция для создания скриншота и его загрузки
   // Делаем скриншот с помощью html2canvas и загружаем в супабейз
   const handleShare = async () => {
+    
     setIsReadyToShare(false);
     const input = document.getElementById("result-div");
 
@@ -237,53 +226,12 @@ const Quiz = () => {
       <div>
         {showResult ? (
           <div className="flex flex-col items-center w-full relative">
-            <div className="mt-12 sm:mt-8 mb-[320px] sm:mb-[200px]">
-              <div id="result-div" className="grid-container ">
-                {Array.from({ length: 28 }, (_, index) => {
-                  const column = index % 7;
-                  const row = Math.floor(index / 7);
-                  const isCorrect = correctQuestions[column] && correctQuestions[column][row];
-                  return (
-                    <div
-                      key={index}
-                      className={`grid-item ${isCorrect !== undefined ? (isCorrect ? 'correct' : 'incorrect') : ''}`}
-                    ></div>
-                  );
-                })}
-                <div className="centered-image">
-                  <Image src={logoContainer} alt="logoContainer" />
-                </div>
-              </div>
-            </div>
-            
+            <ResultGrid correctQuestions={correctQuestions} />
+
             <p className="font-medium mt-3 text-black text-[16px]">
               {!isReadyToShare ? "Wait..." : "Share you result on:"}
             </p>
-            <div className={`${!isReadyToShare ? 'pt-5' : 'flex space-x-4 pt-3'} sm:space-x-2 sm:pt-2`}>
-              {!isReadyToShare ?
-                <div style={{ paddingTop: '20px' }}>
-                  <PropagateLoader color="#6A4FF5" />
-                </div>
-                :
-                <div className="flex space-x-4 pt-3">
-                  <TelegramShareButton url={imageShareUrl}>
-                    <TelegramIcon size={32} onClick={imageShareUrl ? undefined : handleShare} style={{ borderRadius: '7px' }} />
-                  </TelegramShareButton>
-                  <WhatsappShareButton url={imageShareUrl}>
-                    <WhatsappIcon size={32} onClick={imageShareUrl ? undefined : handleShare} style={{ borderRadius: '7px' }} />
-                  </WhatsappShareButton>
-                  <EmailShareButton url={imageShareUrl}>
-                    <EmailIcon size={32} onClick={imageShareUrl ? undefined : handleShare} style={{ borderRadius: '7px' }} />
-                  </EmailShareButton>
-                  <FacebookShareButton url={imageShareUrl}>
-                    <FacebookIcon size={32} style={{ borderRadius: '7px' }} onClick={imageShareUrl ? undefined : handleShare} />
-                  </FacebookShareButton>
-                  <TwitterShareButton url={imageShareUrl}>
-                    <TwitterIcon size={32} style={{ borderRadius: '7px' }} onClick={imageShareUrl ? undefined : handleShare} />
-                  </TwitterShareButton>
-                </div>
-              }
-            </div>
+            <ShareButtons isReadyToShare={isReadyToShare} imageShareUrl={imageShareUrl} handleShare={handleShare} />
             <div className="w-full flex justify-between items-center mt-12 sm:mt-8">
               <a
                 href="https://knowledger.org/"
