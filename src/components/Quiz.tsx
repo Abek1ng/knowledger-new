@@ -236,89 +236,69 @@ const Quiz = () => {
     questions[currentQuestionIndex] && options ?
       <div>
         {showResult ? (
-          <div className="flex flex-col items-center" style={{
-            width: '100%'
-          }}>
-            <div id="result-div" className="grid-container">
-              {Array.from({ length: 28 }, (_, index) => {
-                const column = index % 7;
-                const row = Math.floor(index / 7);
-                const isCorrect = correctQuestions[column] && correctQuestions[column][row];
-
-                return (
-                  <div
-                    key={index}
-                    className={`grid-item ${isCorrect !== undefined ? (isCorrect ? 'correct' : 'incorrect') : ''}`}
-                  ></div>
-                );
-              })}
-              <div className="centered-image">
-                <Image src={logoContainer} alt="logoContainer" />
+          <div className="flex flex-col items-center w-full relative">
+            <div className="mt-12 sm:mt-8 mb-[320px] sm:mb-[200px]">
+              <div id="result-div" className="grid-container ">
+                {Array.from({ length: 28 }, (_, index) => {
+                  const column = index % 7;
+                  const row = Math.floor(index / 7);
+                  const isCorrect = correctQuestions[column] && correctQuestions[column][row];
+                  return (
+                    <div
+                      key={index}
+                      className={`grid-item ${isCorrect !== undefined ? (isCorrect ? 'correct' : 'incorrect') : ''}`}
+                    ></div>
+                  );
+                })}
+                <div className="centered-image">
+                  <Image src={logoContainer} alt="logoContainer" />
+                </div>
               </div>
             </div>
-
+            
             <p className="font-medium mt-3 text-black text-[16px]">
               {!isReadyToShare ? "Wait..." : "Share you result on:"}
             </p>
-            {!isReadyToShare ?
-              <div style={{ paddingTop: '20px' }}>
-                <PropagateLoader color="#6A4FF5" />
-              </div>
-              :
-              <div className="flex space-x-4 pt-3">
-                <TelegramShareButton url={imageShareUrl}>
-                  <TelegramIcon size={32} onClick={imageShareUrl ? undefined : handleShare} style={{ borderRadius: '7px' }} />
-                </TelegramShareButton>
-                <WhatsappShareButton url={imageShareUrl}>
-                  <WhatsappIcon size={32} onClick={imageShareUrl ? undefined : handleShare} style={{ borderRadius: '7px' }} />
-                </WhatsappShareButton>
-                <EmailShareButton url={imageShareUrl}>
-                  <EmailIcon size={32} onClick={imageShareUrl ? undefined : handleShare} style={{ borderRadius: '7px' }} />
-                </EmailShareButton>
-                <FacebookShareButton url={imageShareUrl}>
-                  <FacebookIcon size={32} style={{ borderRadius: '7px' }} onClick={imageShareUrl ? undefined : handleShare} />
-                </FacebookShareButton>
-                <TwitterShareButton url={imageShareUrl}>
-                  <TwitterIcon size={32} style={{ borderRadius: '7px' }} onClick={imageShareUrl ? undefined : handleShare} />
-                </TwitterShareButton>
-              </div>}
-
-            <div className="w-full flex justify-between items-center mt-[50px]">
+            <div className={`${!isReadyToShare ? 'pt-5' : 'flex space-x-4 pt-3'} sm:space-x-2 sm:pt-2`}>
+              {!isReadyToShare ?
+                <div style={{ paddingTop: '20px' }}>
+                  <PropagateLoader color="#6A4FF5" />
+                </div>
+                :
+                <div className="flex space-x-4 pt-3">
+                  <TelegramShareButton url={imageShareUrl}>
+                    <TelegramIcon size={32} onClick={imageShareUrl ? undefined : handleShare} style={{ borderRadius: '7px' }} />
+                  </TelegramShareButton>
+                  <WhatsappShareButton url={imageShareUrl}>
+                    <WhatsappIcon size={32} onClick={imageShareUrl ? undefined : handleShare} style={{ borderRadius: '7px' }} />
+                  </WhatsappShareButton>
+                  <EmailShareButton url={imageShareUrl}>
+                    <EmailIcon size={32} onClick={imageShareUrl ? undefined : handleShare} style={{ borderRadius: '7px' }} />
+                  </EmailShareButton>
+                  <FacebookShareButton url={imageShareUrl}>
+                    <FacebookIcon size={32} style={{ borderRadius: '7px' }} onClick={imageShareUrl ? undefined : handleShare} />
+                  </FacebookShareButton>
+                  <TwitterShareButton url={imageShareUrl}>
+                    <TwitterIcon size={32} style={{ borderRadius: '7px' }} onClick={imageShareUrl ? undefined : handleShare} />
+                  </TwitterShareButton>
+                </div>
+              }
+            </div>
+            <div className="w-full flex justify-between items-center mt-12 sm:mt-8">
               <a
                 href="https://knowledger.org/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full text-[16px] font-medium h-12 bg-[#6A4FF5] text-white flex justify-center items-center rounded-[12px]"
+                className="w-full text-center font-medium h-12 bg-[#6A4FF5] text-white flex justify-center items-center rounded-[12px] knowledger-button"
               >
-                <button className="knowledger-button">
-                  KNOWLEDGER.ORG
-                </button>
+                KNOWLEDGER.ORG
               </a>
             </div>
-            <div
-              className="mt-[81px] space-x-6"
-              style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'end'
-              }}
-            >
-              <button
-                className="flex w-[268px] h-[64px]  justify-center items-center gap-[10px] flex-shrink-0 rounded-[12px] border border-solid border-[1.5px] border-[#F2F2F2] bg-[#FFF] text-[#6A4FF5]"
-                style={{
-                  fontWeight: 600,
-                  background: '#FFF'
-                }}
-              >
+            <div className="flex justify-end w-full mt-20 sm:mt-12 space-x-6 sm:space-x-4">
+              <button className="flex justify-center items-center w-[268px] sm:w-[150px] h-[64px] sm:h-[50px] rounded-[12px] border border-solid border-[1.5px] border-[#F2F2F2] bg-[#FFF] text-[#6A4FF5]" style={{ fontWeight: 600 }}>
                 Share
               </button>
-              <button
-                className="flex w-[268px] h-[64px] justify-center items-center gap-[10px] flex-shrink-0 rounded-[12px] text-white"
-                style={{
-                  fontWeight: 600,
-                  background: '#6A4FF5'
-                }}
-              >
+              <button className="flex justify-center items-center w-[268px] sm:w-[150px] h-[64px] sm:h-[50px] rounded-[12px] text-white" style={{ fontWeight: 600, background: '#6A4FF5' }}>
                 Claim reward
               </button>
             </div>
